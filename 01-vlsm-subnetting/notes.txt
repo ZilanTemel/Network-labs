@@ -1,0 +1,17 @@
+CISCO PACKET TRACER - VLSM & SUBNETTING LAB
+
+1. IP ADDRESSING & VLSM PLAN
+- Green LAN:  192.168.10.0/25   (Mask: 255.255.255.128) - Range: .1 to .126   - Gateway: 192.168.10.1
+- Blue LAN:   192.168.10.128/26  (Mask: 255.255.255.192) - Range: .129 to .190 - Gateway: 192.168.10.129
+- Orange LAN: 192.168.10.192/27  (Mask: 255.255.255.224) - Range: .193 to .222 - Gateway: 192.168.10.193
+- Pink LAN:   192.168.20.0/24   (Mask: 255.255.255.0)   - Range: .1 to .254
+
+2. SERVERS & ROLES
+- Green LAN: DHCP Server (Assigns dynamic IPs to clients)
+- Blue LAN: DNS Server (192.168.10.190)
+- Orange LAN: TFTP Server (192.168.10.222)
+- Pink LAN: Web Server (HTTP)
+
+3. SUMMARY
+- 192.168.10.0/24 network was divided using VLSM to optimize address space.
+- Inter-subnet routing enabled on Router1.
