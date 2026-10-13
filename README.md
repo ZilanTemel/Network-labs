@@ -1,2 +1,1 @@
-# Network-labs
-Ağ teknolojileri üzerine yaptığım lab çalışmaları ve yapılandırma örnekleri
+This repository contains network configuration labs created while preparing for the CCNA exam. All of the work was done using Cisco Packet Tracer. The lab topics cover subnetting, VLSM, IP addressing, switch and router configuration, VLANs, and routing. Each lab folder includes an image of the network topology, a .pkt project file that can be opened with Cisco Packet Tracer, and a short text explaining the steps performed. The labs were prepared to help understand the relevant networking concepts and to examine configurations through hands-on practice.
