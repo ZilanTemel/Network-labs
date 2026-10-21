@@ -1,0 +1,54 @@
+Lab 02: IPv6 Dynamic Configuration (SLAAC, Stateless & Stateful DHCPv6)
+
+Overview:
+This lab demonstrates the three primary methods for dynamically assigning IPv6 addresses and network configurations to end devices in Cisco Packet Tracer.
+
+Topology:
+Router (IPv6Enabled) <---> Switch <---> PC
+                              |
+                           Server0 (DHCPv6 Server)
+
+1. SLAAC Only (Serverless)
+- Description: PC automatically generates its own Global Unicast Address (GUA) using network prefix and gateway received via Router Advertisement (RA) messages.
+- Commands (Router):
+  Router> enable
+  Router# conf t
+  Router(config)# hostname IPv6Enabled
+  Router(config)# ipv6 unicast-routing
+  Router(config)# interface gigabitEthernet 0/0
+  Router(config-if)# ipv6 address 2001:db8:acad:a::1/64
+  Router(config-if)# ipv6 address fe80::1 link-local
+  Router(config-if)# no shutdown
+  Router(config-if)# exit
+
+2. SLAAC with Stateless DHCPv6
+- Description: PC configures its IPv6 address and Default Gateway from the router via SLAAC, but contacts the DHCPv6 server to obtain additional parameters (DNS Server).
+- Router Configuration (Interface GigabitEthernet0/0):
+  Router(config)# interface gigabitEthernet 0/0
+  Router(config-if)# ipv6 nd other-config-flag
+  Router(config-if)# exit
+
+- Server0 Configuration:
+  * IPv6 Address: 2001:db8:acad:a::b/64
+  * Services -> DHCPv6: Service ON, DNS IPv6: 2001:db8:acad:a::b
+
+3. Stateful DHCPv6
+
+- Description: DHCPv6 server centrally manages and leases IPv6 addresses, gateway, and DNS configuration (analogous to IPv4 DHCP). Clients do not use SLAAC to build their own address.
+- Router Configuration (Interface GigabitEthernet0/0):
+  Router(config)# interface gigabitEthernet 0/0
+  Router(config-if)# no ipv6 nd other-config-flag
+  Router(config-if)# ipv6 nd managed-config-flag
+  Router(config-if)# exit
+
+- Server0 Configuration:
+  * Services -> DHCPv6: Service ON
+  * IPv6 Pool: Define start address, prefix, and DNS.
+
+
+Verification:
+- On PC -> Desktop -> IP Configuration:
+  Toggle IPv6 Configuration to 'Automatic'.
+  * SLAAC Only: PC has 2001:db8:acad:a:... IP and fe80::1 Gateway. DNS is blank.
+  * Stateless DHCPv6: PC has SLAAC IP, fe80::1 Gateway, and 2001:db8:acad:a::b DNS.
+  * Stateful DHCPv6: PC obtains its IPv6 address, prefix, and DNS directly from Server0's address pool.
