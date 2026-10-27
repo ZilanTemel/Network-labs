@@ -1,0 +1,66 @@
+Lab 03: Basic Switch Configuration and Management (SVI, Security & Banner)
+
+Overview:
+This lab demonstrates the initial setup, logical management interface (SVI - Vlan1), line security, password encryption, and banner configuration on a Cisco Catalyst Switch in Cisco Packet Tracer.
+
+Topology:
+Laptop / PCs / Printer <---> Switch (KARTAL)
+End Devices IP Range: 192.168.10.11 - 192.168.10.14
+Switch Management IP (Vlan1): 192.168.10.100 /24
+
+1. Initial Switch Configuration
+- Description: Setting device identity, disabling automatic DNS lookups for typos, and setting clock.
+- Commands:
+  Switch> enable
+  Switch# clock set 22:10:00 august 10 2025
+  Switch# conf t
+  Switch(config)# hostname KARTAL
+  KARTAL(config)# no ip domain-lookup
+
+2. Management Interface Configuration (SVI)
+- Description: Assigning an IP address to the logical management interface (Vlan1) to enable remote connectivity (Ping/Telnet/SSH) since physical Layer 2 ports do not accept IP addresses.
+- Commands:
+  KARTAL(config)# interface vlan 1
+  KARTAL(config-if)# ip address 192.168.10.100 255.255.255.0
+  KARTAL(config-if)# no shutdown
+  KARTAL(config-if)# exit
+
+3. Device Security, Line Passwords and Banner
+- Description: Securing privileged exec mode, console port, and virtual terminal (vty) lines with encrypted passwords and displaying a legal authorization banner.
+- Commands:
+  KARTAL(config)# enable secret cisco
+  KARTAL(config)# service password-encryption
+  KARTAL(config)# banner motd ^CSadece yetkili personel giris iznine sahiptir.^C
+  KARTAL(config)# line con 0
+  KARTAL(config-line)# password cisco
+  KARTAL(config-line)# login
+  KARTAL(config-line)# exec-timeout 5 0
+  KARTAL(config-line)# logging synchronous
+  KARTAL(config-line)# exit
+  KARTAL(config)# line vty 0 4
+  KARTAL(config-line)# password cisco
+  KARTAL(config-line)# login
+  KARTAL(config-line)# exec-timeout 5 0
+  KARTAL(config-line)# logging synchronous
+  KARTAL(config-line)# exit
+  KARTAL(config)# line vty 5 15
+  KARTAL(config-line)# password cisco
+  KARTAL(config-line)# login
+  KARTAL(config-line)# exit
+
+4. Saving Configuration
+- Description: Committing active RAM running-config into non-volatile memory (NVRAM).
+- Commands:
+  KARTAL(config)# do write memory
+
+Verification:
+- Interface Status:
+  KARTAL# show ip interface brief
+  * Vlan1 is up / up with 192.168.10.100 assigned.
+  * Active connected FastEthernet ports are up / up.
+- Connectivity:
+  KARTAL# ping 192.168.10.11
+  * Output: .!!!! (80% success on first attempt due to ARP resolution, subsequent pings are 100%).
+- Configuration & Memory:
+  KARTAL# show running-config
+  KARTAL# show flash
